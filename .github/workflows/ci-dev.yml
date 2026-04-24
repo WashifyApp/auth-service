@@ -36,6 +36,7 @@ jobs:
   snyk:
     name: Stage 2 — Snyk
     needs: sonarqube
+    if: always()   # run even if SonarQube failed
     uses: WashifyApp/washify-workflows/.github/workflows/reusable-snyk.yml@main
     with:
       environment: dev
@@ -49,6 +50,7 @@ jobs:
   build-scan-push:
     name: Stage 3 — Build, Scan & Push
     needs: snyk
+    if: always()   # run even if Snyk failed
     uses: WashifyApp/washify-workflows/.github/workflows/reusable-build-scan-push.yml@main
     with:
       environment: dev
