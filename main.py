@@ -12,7 +12,7 @@ from bson import ObjectId
 app = FastAPI(title="Washify Auth Service")
 
 app.add_middleware(
-    CORSMiddleware,
+    CORSMiddleware, 
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
