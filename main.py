@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
 import jwt
-import motor.motor_asyncio
+import motor.motor_asyncio 
 from bson import ObjectId
 
 app = FastAPI(title="Washify Auth Service")
