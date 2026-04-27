@@ -3,16 +3,16 @@ from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr 
 from passlib.context import CryptContext
 import jwt
-import motor.motor_asyncio
+import motor.motor_asyncio 
 from bson import ObjectId
 
 app = FastAPI(title="Washify Auth Service")
 
-app.add_middleware(
-    CORSMiddleware, 
+app.add_middleware( 
+    CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],

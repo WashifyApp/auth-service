@@ -1,21 +1,17 @@
-# ─────────────────────────────────────────────────────────────
-# CI Pipeline — DEV (develop branch)
-# Copy this file into EVERY microservice repo at:
-#   .github/workflows/ci-dev.yml
-#
-# Image tag format: sha-{first 7 of commit SHA}
-# e.g. ghcr.io/washifyapp/auth-service:sha-abc1234
-# ─────────────────────────────────────────────────────────────
 name: CI — Dev
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
   pull_request:
-    branches: [ develop ]
+    branches: [ main ]
+
+permissions:
+  contents: read 
+  packages: write
 
 jobs:
-  # ── Stage 1: SonarQube Code Quality ──────────────────────
+  # ── Stage 1: SonarQube Code Quality
   sonarqube:
     name: Stage 1 — SonarQube
     uses: WashifyApp/washify-workflows/.github/workflows/reusable-sonarqube.yml@main
@@ -28,10 +24,11 @@ jobs:
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       MAIL_RECIPIENT: ${{ secrets.MAIL_RECIPIENT }}
 
-  # ── Stage 2: Snyk Dependency Scan ────────────────────────
+  # ── Stage 2: Snyk Dependency Scan
   snyk:
     name: Stage 2 — Snyk
     needs: sonarqube
+    if: always()   # run even if SonarQube failed
     uses: WashifyApp/washify-workflows/.github/workflows/reusable-snyk.yml@main
     with:
       environment: dev
@@ -41,10 +38,11 @@ jobs:
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       MAIL_RECIPIENT: ${{ secrets.MAIL_RECIPIENT }}
 
-  # ── Stage 3: Docker Build + Trivy + Push to GHCR ─────────
+  # ── Stage 3: Docker Build + Trivy + Push to GHCR
   build-scan-push:
     name: Stage 3 — Build, Scan & Push
     needs: snyk
+    if: always()   # run even if Snyk failed
     uses: WashifyApp/washify-workflows/.github/workflows/reusable-build-scan-push.yml@main
     with:
       environment: dev
