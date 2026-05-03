@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware 
 from pydantic import BaseModel, EmailStr 
-from passlib.context import CryptContext
+from passlib.context import CryptContext 
 import jwt
 import motor.motor_asyncio 
 from bson import ObjectId
